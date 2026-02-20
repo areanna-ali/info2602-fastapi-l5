@@ -25,5 +25,10 @@ async def app_dashbaord(
     request: Request,
     user: AuthDep
 ):
-    # Implement task 3.5 here. Remove the line below that says "pass" once complete
-    pass
+    return templates.TemplateResponse(
+        request=request, 
+        name="todo.html",
+        context={
+            "current_user": user
+        }
+    )

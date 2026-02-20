@@ -1,30 +1,70 @@
 {% extends "layout.html" %}
 {% block title %}Todo App{% endblock %}
-{% block page %} {{ current_user.username }}'s' Todo{% endblock %}
+{% block page %} {{ current_user.username }}'s Todo{% endblock %}
 
-{% block link%}
+{% block link %}
     <ul id="nav-mobile" class="right">
         <li><a href="/logout">Logout</a></li>
     </ul>
 {% endblock %}
 
 {% block styles %}
-  div.card{
-    margin:0;
+  div.card {
+    margin: 0;
   }
 
-  #result{
-    margin-top:10px;
+  #result {
+    margin-top: 10px;
     height: 40vh;
     overflow-y: scroll;
   }
 
-  .card{
+  .card {
     height: 265px;
     padding-top: 50px;
   }
-
 {% endblock %}
 
 {% block content %} 
+<main class="container" style="padding-top: 75px">
+  <!-- 1. The Creation Form -->
+  <form name="addForm" class="card" method="POST" action="/todos">
+    <div class="card-content">
+      <span class="card-title">Create Todo</span>
+        <div class="input-field">
+          <input type="text" name="text" placeholder="Enter Todo Text" class="materialize-textarea">
+          <label for="text">Enter Todo Text</label>
+        </div>
+    </div>
+    <div class="card-actions">
+        <div class="row">
+          <div class="col s12 m4 offset-m8">
+            <input class="btn blue right" type="submit" value="SAVE" />
+          </div>
+        </div>
+    </div>
+  </form>
+
+  <!-- 2. The Todo List (MOVED INSIDE THE CONTENT BLOCK) -->
+  <ul class="collection" id="result">
+    {% for todo in current_user.todos %}
+         <li class="collection-item">
+            <form class="row" style="margin-bottom: 0px;" method="POST" action="toggle/{{todo.id}}">
+              <span class="card-title">{{todo.text}}
+                <label class="right">
+                  <input type="checkbox" name="done" onchange="this.form.submit()" {% if todo.done %} checked {% endif %} />
+                  <span>Done</span>
+                </label>
+              </span>
+            </form>
+            <div class="row" style="margin-bottom: 0px;">
+              <div class="col s12">
+                <a href="/editTodo/{{todo.id}}" style="margin-right: 20px;">EDIT</a>
+                <a href="/deleteTodo/{{todo.id}}" class="red-text">DELETE</a>
+              </div>
+            </div>
+        </li>
+    {% endfor %}
+  </ul>
+</main>
 {% endblock %}

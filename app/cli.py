@@ -1,4 +1,5 @@
 import typer
+
 import csv
 from tabulate import tabulate
 from sqlmodel import select
