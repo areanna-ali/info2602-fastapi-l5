@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}Session Expired{% endblock %}
+{% block page %}Session Expired{% endblock %}
+
+
+{% block styles %}
+  div.card{
+    margin:0;
+  }
+
+  .card{
+    height: 265px;
+    padding-top: 50px;
+  }
+
+{% endblock %}
+
+{% block content %} 
+
+<main class="container">
+  <div class="row" style="margin-top: 100px">
+    <div class="col section">
+      <span class="card-title">Your session has expired please login again</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <a href="/login" class="btn blue">Login</a>
+    </div>
+  </div>
+</main>
+{% endblock %}

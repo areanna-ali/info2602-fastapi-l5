@@ -3,20 +3,23 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlmodel import select
 from app.database import SessionDep
 from app.models import *
-from app.auth import get_current_user
+from app.auth import AuthDep
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from fastapi import status
+from . import templates
 
 index_router = APIRouter()
 
-@index_router.get("/", response_class=HTMLResponse)
+@index_router.get("/app", response_class=HTMLResponse)
 async def index(
-    request: Request, 
+    request: Request,
+    logged_in_user: AuthDep
 ):
-    try:
-        logged_in_user = await get_current_user()
-        return RedirectResponse("/dashboard")
-    except Exception:
-        print("User not logged in, carrying them to the login page instead")
-        return RedirectResponse("/login")
+    return templates.TemplateResponse(
+        request=request, 
+        name="todo.html",
+        context={
+            "current_user":logged_in_user
+        }
+    )

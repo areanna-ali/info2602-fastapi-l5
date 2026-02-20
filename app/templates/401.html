@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Not Authorized{% endblock %}
+{% block page %}Not Authorized{% endblock %}
+
+
+{% block styles %}
+  div.card{
+    margin:0;
+  }
+
+  .card{
+    height: 265px;
+    padding-top: 50px;
+  }
+
+{% endblock %}
+
+{% block content %} 
+<main class="container">
+  <div class="row" style="margin-top: 100px">
+    <div class="col section">
+      <span class="card-title">You are not authorized to access this page</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <a href="/login" class="btn blue">Login</a>
+    </div>
+  </div>
+</main>
+{% endblock %}
