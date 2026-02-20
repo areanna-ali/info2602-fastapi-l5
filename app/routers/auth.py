@@ -25,7 +25,7 @@ async def login_action(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token = create_access_token(data={"sub": user.id, "role": user.role},)
+    access_token = create_access_token(data={"sub": f"{user.id}", "role": user.role},)
 
     max_age = 1 * 24 * 60 * 60 # (1 day converted to secs)
     response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
@@ -69,7 +69,6 @@ async def login_page(request: Request):
         request=request, 
         name="login.html",
     )
-
 
 @auth_router.get("/signup", response_class=HTMLResponse)
 async def signup_page(request: Request):

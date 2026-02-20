@@ -68,3 +68,22 @@
   </ul>
 </main>
 {% endblock %}
+
+<ul class="collection " id="result">
+  {% for todo in current_user.todos %}
+       <li class="collection-item">
+          <form class="row" method="POST" action="toggle/{{todo.id}}" >
+            <span class="card-title">{{todo.text}}
+              <label class="right">
+                <input type="checkbox" name="done" onchange="this.form.submit()" {%  if todo.done %} checked {% endif %} />
+                <span>Done</span>
+              </label>
+            </span>
+          </form>
+          <div class="row">
+            <a href="/editTodo/{{todo.id}}">EDIT</a>
+            <a href="/deleteTodo/{{todo.id}}">DELETE</a>
+          </div>
+      </li>
+  {% endfor %}
+</ul>
