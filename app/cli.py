@@ -13,10 +13,15 @@ def initialize():
     with get_cli_session() as db: # Get a connection to the database
         drop_all() # delete all tables
         create_db_and_tables() #recreate all tables
-        bob = RegularUser(username='bob', email='bob@mail.com',password=encrypt_password('bobpass'))
-        rick = RegularUser(username='rick', email='rick@mail.com', password=encrypt_password('rickpass'))
-        sally = RegularUser(username='sally', email='sally@mail.com', password=encrypt_password('sallypass'))
-        db.add_all([bob, rick, sally])  #add all can save multiple objects at once
+        bob = RegularUserCreate(username='bob', email='bob@mail.com',password=encrypt_password('bobpass'))
+        bob_db = User.model_validate(bob)
+        rick = RegularUserCreate(username='rick', email='rick@mail.com', password=encrypt_password('rickpass'))
+        rick_db = User.model_validate(rick)
+        sally = RegularUserCreate(username='sally', email='sally@mail.com', password=encrypt_password('sallypass'))
+        sally_db = User.model_validate(sally)
+
+
+        db.add_all([bob_db, rick_db, sally_db])  #add all can save multiple objects at once
         db.commit()
 
         with open('todos.csv') as file:

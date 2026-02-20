@@ -16,20 +16,22 @@ class UserResponse(SQLModel):
     username:str
     email: EmailStr
 
-class User(SQLModel, table=False):
-    id: Optional[int] = Field(default=None, primary_key=True)
+class UserBase(SQLModel,):
     username: str = Field(index=True, unique=True)
     email: str = Field(index=True, unique=True)
     password: str
     role:str = ""
 
-class Admin(User, table=True):
+class User(UserBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    todos: list['Todo'] = Relationship(back_populates="user")
+
+class AdminCreate(UserBase):
     role:str = "admin"
 
-class RegularUser(User, table=True):
+class RegularUserCreate(UserBase):
     role:str = "regular_user"
 
-    todos: list['Todo'] = Relationship(back_populates="user")
 
 class TodoCategory(SQLModel, table=True):
     category_id: int = Field(foreign_key="category.id", primary_key=True)
@@ -37,7 +39,7 @@ class TodoCategory(SQLModel, table=True):
 
 class Category(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, default=None)
-    user_id: int = Field(foreign_key="regularuser.id")
+    user_id: int = Field(foreign_key="user.id")
     text:str
 
     todos:list['Todo'] = Relationship(back_populates="categories", link_model=TodoCategory)
@@ -56,11 +58,11 @@ class TodoUpdate(SQLModel):
 
 class Todo(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, default=None)
-    user_id: int = Field(foreign_key="regularuser.id")
+    user_id: int = Field(foreign_key="user.id")
     text:str
     done: bool = False
 
-    user: RegularUser = Relationship(back_populates="todos")
+    user: User = Relationship(back_populates="todos")
     categories:list['Category'] = Relationship(back_populates="todos", link_model=TodoCategory)
 
     def toggle(self):
